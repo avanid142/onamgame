@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Pookalam Rush - Maveli's Homecoming</title>
+<meta name="description" content="A ten-day Onam flower-carpet game built for ONAM.exe by IEEE SB VJCET.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="memory-game.css">
+</head>
+<body>
+
+<div id="app">
+  <div id="petal-field"></div>
+
+  <div class="stage">
+    <div class="kasavu-border"></div>
+
+    <!-- HOME SCREEN -->
+    <div class="screen active" id="screen-home">
+      <div class="mascot">👑</div>
+      <h1>Onam Arcade</h1>
+      <div class="sub">Pick a celebration to play</div>
+
+      <div class="game-card" style="display: none;">
+        <div class="game-card-emoji">🌼</div>
+        <div class="game-card-body">
+          <div class="game-card-title">Pookalam Rush</div>
+          <div class="game-card-desc">Bloom flower carpets across 10 days of Onam.</div>
+          <div class="game-card-best" id="home-best-pookalam">Best: 0 pts</div>
+        </div>
+        <button class="btn" id="btn-open-pookalam">Play ▸</button>
+      </div>
+
+      <div class="game-card">
+        <div class="game-card-emoji">🧠</div>
+        <div class="game-card-body">
+          <div class="game-card-title">Pookalam Master</div>
+          <div class="game-card-desc">Memorize a pookalam, then rebuild it before it fades.</div>
+          <div class="game-card-best" id="home-best-memory">Best: 0 pts</div>
+        </div>
+        <button class="btn" id="btn-open-memory">Play ▸</button>
+      </div>
+
+      <div class="game-card">
+        <div class="game-card-emoji">🚣</div>
+        <div class="game-card-body">
+          <div class="game-card-title">Vallam Kali Sprint</div>
+          <div class="game-card-desc">Dodge, collect, and race down the river.</div>
+          <div class="game-card-best" id="home-best-boat">Best: 0 pts</div>
+        </div>
+        <button class="btn" id="btn-open-boat">Play ▸</button>
+      </div>
+
+      <div class="game-card">
+        <div class="game-card-emoji">🪔</div>
+        <div class="game-card-body">
+          <div class="game-card-title">Thumbi Taal</div>
+          <div class="game-card-desc">Catch the beat as a dancer circles the lamp.</div>
+          <div class="game-card-best" id="home-best-thumbi">Best: 0 pts</div>
+        </div>
+        <button class="btn" id="btn-open-thumbi">Play ▸</button>
+      </div>
+    </div>
+
+    <!-- POOKALAM INTRO SCREEN -->
+    <div class="screen" id="screen-start">
+      <div class="mascot">👑</div>
+      <h1>Pookalam Rush</h1>
+      <div class="sub">Maveli's Homecoming</div>
+      <div class="how-to">
+        Pick a <b>flower colour</b> below, then tap the pale segments of the pookalam that match it — they'll bloom into full colour. Finish the pattern before the sun-timer runs out!<br><br>
+        Watch for a floating <b>✨ golden petal</b> — catch it for a bonus feast round. Ten rounds, one for each day from <b>Atham</b> to <b>Thiruvonam</b>, each pookalam bigger than the last.
+      </div>
+      <button class="btn" id="btn-start">Begin Atham ▸</button>
+      <button class="btn-link" id="btn-back-home-1">← Back to menu</button>
+    </div>
+
+    <!-- GAME SCREEN -->
+    <div class="screen" id="screen-game">
+      <div id="hud">
+        <div class="day-badge" id="hud-day">Atham</div>
+        <div class="hearts" id="hud-hearts">❤️❤️❤️❤️❤️</div>
+        <div class="score" id="hud-score">0 pts</div>
+      </div>
+      <div id="timer-track"><div id="timer-fill"></div></div>
+
+      <div id="wheel-wrap">
+        <div id="maveli-quote" class="quote-banner"></div>
+        <svg id="pookalam-svg" viewBox="0 0 400 400"></svg>
+
+        <div id="level-banner">
+          <div class="big" id="level-banner-title">Atham complete!</div>
+          <div id="level-banner-sub"></div>
+        </div>
+
+        <div id="bonus-overlay">
+          <div id="bonus-banner">🎉 Maveli's Feast — catch the treats!</div>
+        </div>
+      </div>
+
+      <div id="palette"></div>
+      <button class="btn-link" id="btn-end-game">🏠 End Game</button>
+    </div>
+
+    <!-- END SCREEN -->
+    <div class="screen" id="screen-end">
+      <div class="mascot">🌺</div>
+      <h2 id="end-title">Thiruvonam Complete!</h2>
+      <div class="stars" id="end-stars">⭐⭐⭐</div>
+      <div class="final-score" id="end-score">0</div>
+      <div class="high-score-line" id="end-highscore">Best: 0 pts</div>
+      <div class="note" id="end-note">Every pookalam bloomed with colour. Onashamsakal!</div>
+      <button class="btn" id="btn-restart">Play Again ▸</button>
+      <button class="btn-link" id="btn-home-from-pookalam-end">🏠 Main Menu</button>
+    </div>
+
+    <!-- BOAT INTRO SCREEN -->
+    <div class="screen" id="screen-boat-intro">
+      <div class="mascot">🚣</div>
+      <h1>Vallam Kali Sprint</h1>
+      <div class="sub">Race the snake boats down the river</div>
+      <div class="how-to">
+        Swipe or tap the <b>left / right</b> half of the river (or use ← → arrow keys) to switch lanes. Dodge rocks 🪨 and logs 🪵, and scoop up lamps 🪔 and flowers 🌸 for points. The current gets faster the further you paddle — how far can you go?
+      </div>
+      <button class="btn" id="btn-start-boat">Start Race ▸</button>
+      <button class="btn-link" id="btn-back-home-2">← Back to menu</button>
+    </div>
+
+    <!-- BOAT GAME SCREEN -->
+    <div class="screen" id="screen-boat-game">
+      <div id="hud">
+        <div class="day-badge" id="boat-hud-distance">0 m</div>
+        <div class="hearts" id="boat-hud-hearts">❤️❤️❤️❤️❤️</div>
+        <div class="score" id="boat-hud-score">0 pts</div>
+      </div>
+      <div id="boat-wrap">
+        <canvas id="boat-canvas"></canvas>
+        <div id="boat-quote" class="quote-banner"></div>
+      </div>
+      <button class="btn-link" id="btn-end-boat">🏠 End Race</button>
+    </div>
+
+    <!-- BOAT END SCREEN -->
+    <div class="screen" id="screen-boat-end">
+      <div class="mascot">🏁</div>
+      <h2 id="boat-end-title">Race Over!</h2>
+      <div class="stars" id="boat-end-stars">⭐⭐⭐</div>
+      <div class="final-score" id="boat-end-score">0</div>
+      <div class="high-score-line" id="boat-end-highscore">Best: 0 pts</div>
+      <div class="note" id="boat-end-note">The river carried you far. Onashamsakal!</div>
+      <button class="btn" id="btn-restart-boat">Race Again ▸</button>
+      <button class="btn-link" id="btn-home-from-boat-end">🏠 Main Menu</button>
+    </div>
+
+    <!-- THUMBI INTRO SCREEN -->
+    <div class="screen" id="screen-thumbi-intro">
+      <div class="mascot">🪔</div>
+      <h1>Thumbi Taal</h1>
+      <div class="sub">Dance in rhythm around Maveli's lamp</div>
+      <div class="how-to">
+        A dancer 💃 circles the lamp non-stop. Tap <b>anywhere on the circle</b> (or press <b>Space</b>) the instant she sweeps through the glowing golden arc at the top. Land it dead-centre for a <b>Perfect</b>, catch the edge for a <b>Good</b> — miss the arc entirely, or tap too early or late, and you lose a heart. The dance quickens with every beat you land — how long can you keep the taal?
+      </div>
+      <button class="btn" id="btn-start-thumbi">Start Dance ▸</button>
+      <button class="btn-link" id="btn-back-home-3">← Back to menu</button>
+    </div>
+
+    <!-- THUMBI GAME SCREEN -->
+    <div class="screen" id="screen-thumbi-game">
+      <div id="hud">
+        <div class="day-badge" id="thumbi-hud-combo">Combo 0</div>
+        <div class="hearts" id="thumbi-hud-hearts">❤️❤️❤️❤️❤️</div>
+        <div class="score" id="thumbi-hud-score">0 pts</div>
+      </div>
+      <div id="thumbi-wrap">
+        <div id="thumbi-quote" class="quote-banner"></div>
+        <div id="thumbi-circle">
+          <div id="thumbi-zone"></div>
+          <div id="thumbi-lamp">🪔</div>
+          <div id="thumbi-dancer"><span>💃</span></div>
+          <div id="thumbi-feedback"></div>
+        </div>
+      </div>
+      <button class="btn-link" id="btn-end-thumbi">🏠 End Dance</button>
+    </div>
+
+    <!-- THUMBI END SCREEN -->
+    <div class="screen" id="screen-thumbi-end">
+      <div class="mascot">🌸</div>
+      <h2 id="thumbi-end-title">Dance Complete!</h2>
+      <div class="stars" id="thumbi-end-stars">⭐⭐⭐</div>
+      <div class="final-score" id="thumbi-end-score">0</div>
+      <div class="high-score-line" id="thumbi-end-highscore">Best: 0 pts</div>
+      <div class="note" id="thumbi-end-note">The rhythm carried on long after you stopped. Onashamsakal!</div>
+      <button class="btn" id="btn-restart-thumbi">Dance Again ▸</button>
+      <button class="btn-link" id="btn-home-from-thumbi-end">🏠 Main Menu</button>
+    </div>
+
+    <!-- POOKALAM MASTER — INTRO -->
+<div class="screen" id="screen-memory-intro">
+  <div class="mascot">🌸</div>
+  <h1>Pookalam Master</h1>
+  <div class="sub">Study it, then rebuild it from memory</div>
+  <div class="how-to">
+    Study the reference pookalam, then it disappears. Rebuild it ring by
+    ring on the blank board before the clock runs out. Pick a petal
+    <b>color</b>, then tap a wedge to place it — <b>inner rings</b> are
+    judged harder than outer ones, just like a real competition. If your
+    memory slips, spend a <b>❤️ Peek</b> to glance at the reference again
+    — you get a couple of chances, so use them wisely, the clock keeps running.
+  </div>
+
+  <div class="mm-diff-row" id="mm-diff-row">
+    <button class="mm-diff-btn" data-difficulty="novice">2 rings · Novice</button>
+    <button class="mm-diff-btn active" data-difficulty="adept">3 rings · Adept</button>
+    <button class="mm-diff-btn" data-difficulty="vaidika">4 rings · Vaidika</button>
+  </div>
+
+  <label class="mm-daily-toggle">
+    <input type="checkbox" id="mm-daily-check" />
+    <span class="mm-track"><span class="mm-thumb"></span></span>
+    <span>Today's design — same pookalam for everyone, ranked on one board</span>
+  </label>
+
+  <input id="mm-name-input" maxlength="24" placeholder="Your name for the leaderboard" autocomplete="off" />
+
+  <button class="btn" id="mm-start-btn">Begin the pookalam ▸</button>
+  <button class="btn-link" id="mm-back-home">← Back to menu</button>
+</div>
+
+<!-- POOKALAM MASTER — GAME -->
+<div class="screen" id="screen-memory-game">
+  <div class="mm-hud">
+    <div class="mm-badge" id="mm-phase">Memorize</div>
+    <div class="mm-hearts" id="mm-hearts">❤️❤️</div>
+    <div class="mm-score" id="mm-score">0</div>
+  </div>
+  <div id="mm-timer-track"><div id="mm-timer-fill"></div></div>
+  <div style="text-align:center;font-size:11px;color:rgba(223,246,255,0.55);margin-top:-6px;" id="mm-phase-sub">Study the design</div>
+
+  <div class="mm-stage">
+    <div class="mm-canvases">
+      <div>
+        <div class="mm-board-label">Your pookalam</div>
+        <canvas id="mm-board" width="480" height="480"></canvas>
+      </div>
+      <div>
+        <div class="mm-board-label">Reference</div>
+        <canvas id="mm-reference" width="240" height="240"></canvas>
+        <div class="mm-ref-hidden" id="mm-ref-blank" style="display:none;">hidden — work from memory</div>
+        <button class="mm-peek-btn" id="mm-peek-btn" disabled>👁️ Peek (0)</button>
+      </div>
+    </div>
+    <div id="mm-palette"></div>
+    <div class="mm-hint">Each ring is divided into wedges. Center rings are worth more — a mistake there costs more than one at the outer edge.</div>
+  </div>
+
+  <button class="btn-link" id="mm-end-round-btn">🏠 End Game</button>
+</div>
+
+<!-- POOKALAM MASTER — END -->
+<div class="screen" id="screen-memory-end">
+  <div class="mascot">🌺</div>
+  <h2>Your pookalam, judged</h2>
+  <div class="final-score" id="mm-final-score">0</div>
+  <div class="score-label">out of 1000</div>
+  <div class="note" id="mm-verdict"></div>
+
+  <div class="mm-breakdown">
+    <div><div class="mm-b-num" id="mm-b-accuracy">0%</div><div class="mm-b-lbl">Petal accuracy</div></div>
+    <div><div class="mm-b-num" id="mm-b-speed">0s</div><div class="mm-b-lbl">Time remaining</div></div>
+    <div><div class="mm-b-num" id="mm-b-streak">0</div><div class="mm-b-lbl">Best correct streak</div></div>
+    <div><div class="mm-b-num" id="mm-b-rings">0</div><div class="mm-b-lbl">Rings completed</div></div>
+  </div>
+
+  <div class="mm-leaderboard">
+    <div class="mm-lb-title" id="mm-lb-title">Leaderboard — Adept</div>
+    <div id="mm-lb-list"></div>
+  </div>
+
+  <button class="btn" id="mm-again-btn">Lay another pookalam ▸</button>
+  <button class="btn-link" id="mm-home-from-end">🏠 Main Menu</button>
+</div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script src="memory-game.js"></script>
+</body>
+</html>
